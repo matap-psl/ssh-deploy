@@ -20,14 +20,14 @@ const defaultOptions = {
 console.log('[general] GITHUB_WORKSPACE: ', GITHUB_WORKSPACE);
 
 const sshDeploy = (() => {
-  const rsync = ({ privateKey, port, src, dest, args, exclude,sshPassFilePath }) => {
+  const rsync = ({ privateKey, port, src, dest, args, exclude, sshPassFilePath }) => {
     console.log(`[Rsync] Starting Rsync Action: ${src} to ${dest}`);
     if (exclude) console.log(`[Rsync] exluding folders ${exclude}`);
 
     try {
       // RSYNC COMMAND
       nodeRsync({
-        src, dest, args, privateKey, port, excludeFirst: exclude, ...defaultOptions
+        src, dest, args, privateKey, port, sshPassFilePath, excludeFirst: exclude, ...defaultOptions
       }, (error, stdout, stderr, cmd) => {
         if (error) {
           console.error('⚠️ [Rsync] error: ', error.message);
@@ -45,7 +45,7 @@ const sshDeploy = (() => {
     }
   };
 
-  const init = ({ src, dest, args, host = 'localhost', port, username, privateKeyContent, exclude = [], sshPassFilePath = "" }) => {
+  const init = ({ src, dest, args, host = 'localhost', port, username, privateKeyContent, exclude = [], sshPassFilePath = '' }) => {
     validateRsync(() => {
       const privateKey = addSshKey(privateKeyContent, DEPLOY_KEY_NAME || 'deploy_key');
       const remoteDest = `${username}@${host}:${dest}`;
