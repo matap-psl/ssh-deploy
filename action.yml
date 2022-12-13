@@ -31,6 +31,10 @@ inputs:
     description: "An array of folder to exclude"
     required: false
     default: ""
+  SSH_PASS_FILE_PATH:
+    description: "File path for SSHPASS command"
+    required: false
+    default: ""
 outputs:
   status:
     description: "Status"
